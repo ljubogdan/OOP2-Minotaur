@@ -58,6 +58,15 @@ class Lavirint {
     public:
         Lavirint(int brojRedova, int brojKolona);
         ~Lavirint();
+        int getBrojRedova() const;
+        int getBrojKolona() const;
+        void setBrojRedova(int brojRedova);
+        void setBrojKolona(int brojKolona);
+
+        Element& getElement(int x, int y) const;
+        void setElement(int x, int y, Element& element);
+
+        void generisiLavirint();
 };
 
 #endif // LAVIRINT_HPP

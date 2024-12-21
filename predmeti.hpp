@@ -44,3 +44,15 @@
 Минотаур је уништио робота
 Тестирање кода у слободној форми (сви случаји са којима је тестирано решење морају бити наведени у документацији)
 Ток игре и руковање датотекама треба имплементирати као одвојене класе*/
+
+// predmet nasledjuje klasu element
+// može biti magla, mac, stit, cekic
+// svaki predmet ima svoj efekat
+
+#include "element.hpp"
+
+class Predmet : public Element {
+    public:
+        Predmet(int x, int y, char simbol);
+        ~Predmet();
+};

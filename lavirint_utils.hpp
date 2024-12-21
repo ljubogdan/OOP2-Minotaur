@@ -1,8 +1,4 @@
-#ifndef ROBOT_HPP
-#define ROBOT_HPP
-
-/*
-    • На почетку програма потребно је кроз аргументе командне линије задати димензију лавиринта и број предмета са специјалним ефектима. Лавиринт је произвољна матрица где број колона и број редова морају бити веће од 15 (нпр. 20x20, 17x25, 30x20), а број предмета мора бити већи од 3.
+/*    • На почетку програма потребно је кроз аргументе командне линије задати димензију лавиринта и број предмета са специјалним ефектима. Лавиринт је произвољна матрица где број колона и број редова морају бити веће од 15 (нпр. 20x20, 17x25, 30x20), а број предмета мора бити већи од 3.
     • На основу димензије потребно је генерисати поставку на следећи начин:
         ◦ ‘#’ - зидови
             ▪ спољашњи зидови морају попунити димензије матрице
@@ -49,23 +45,14 @@
 Тестирање кода у слободној форми (сви случаји са којима је тестирано решење морају бити наведени у документацији)
 Ток игре и руковање датотекама треба имплементирати као одвојене класе*/
 
-// robot nasledjuje klasu element 
+#ifndef LAVIRINT_UTILS_HPP
+#define LAVIRINT_UTILS_HPP
 
-#include "element.hpp"
+#include "lavirint.hpp"
 
-class Robot : public Element {
+class LavirintUtils {
     public:
-        Robot(int x, int y, char simbol);
-        ~Robot();
-        
-        int getX() const;
-        int getY() const;
-        char getSimbol() const;
-        void setX(int x);
-        void setY(int y);
-        void setSimbol(char simbol);
-        
-        void pomeriNa(int x, int y);
+        static void generisiLavirint(Lavirint& lavirint, int brojPredmeta);
 };
 
-#endif // ROBOT_HPP
+#endif // LAVIRINT_UTILS_HPP

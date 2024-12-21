@@ -48,18 +48,10 @@
 #include "igra.hpp"
 #include <iostream>
 
-#define RESET "\033[0m"
-#define RED "\033[31m"
-#define GREEN "\033[32m"
-#define YELLOW "\033[33m"
-#define BLUE "\033[34m"
-#define MAGENTA "\033[35m"
-#define CYAN "\033[36m"
-
 void uvodnaPoruka() {
     std::cout << BLUE << "*************************************" << RESET << std::endl;
     std::cout << BLUE << "*                                   *" << RESET << std::endl;
-    std::cout << BLUE << "* " << YELLOW << "       DOBRODOSLI U IGRU          " << BLUE << "*" << RESET << std::endl;
+    std::cout << BLUE << "* " << YELLOW << "       DOBRODOŠLI U IGRU          " << BLUE << "*" << RESET << std::endl;
     std::cout << BLUE << "* " << YELLOW << "   ROBOT U LAVIRINTU KNOSOSA      " << BLUE << "*" << RESET << std::endl;
     std::cout << BLUE << "*                                   *" << RESET << std::endl;
     std::cout << BLUE << "*************************************" << RESET << std::endl;
@@ -91,6 +83,7 @@ int main() {
 
     Igra igra(brojRedova, brojKolona, brojPredmeta);
     igra.pokreniIgru();
-    
+
+    igra.zavrsiIgru();
     return 0;
-}
+};

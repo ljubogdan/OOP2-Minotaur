@@ -1,6 +1,3 @@
-#ifndef IGRA_HPP
-#define IGRA_HPP
-
 // sada pravimo klasu igra koja će imati sve elemente i radi u main
 /*
     • На почетку програма потребно је кроз аргументе командне линије задати димензију лавиринта и број предмета са специјалним ефектима. Лавиринт је произвољна матрица где број колона и број редова морају бити веће од 15 (нпр. 20x20, 17x25, 30x20), а број предмета мора бити већи од 3.
@@ -51,9 +48,21 @@
 Ток игре и руковање датотекама треба имплементирати као одвојене класе
 */
 
+#ifndef IGRA_HPP
+#define IGRA_HPP
+
+#include <iostream>
 #include "lavirint.hpp"
 #include "robot.hpp"
 #include "minotaur.hpp"
+
+#define RESET "\033[0m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+#define BLUE "\033[34m"
+#define MAGENTA "\033[35m"
+#define CYAN "\033[36m"
 
 class Igra {
     private:
@@ -64,8 +73,12 @@ class Igra {
         bool krajIgre;
         int trajanjeEfekta;
     public:
-        
+        Igra(int brojRedova, int brojKolona, int brojPredmeta);
+        ~Igra();
+        void pokreniIgru();
+        void zavrsiIgru();
+};
 
-}
 #endif // IGRA_HPP
+
 

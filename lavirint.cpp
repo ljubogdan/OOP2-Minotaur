@@ -17,5 +17,32 @@ Lavirint::~Lavirint() {
     delete[] matrica;
 }
 
+int Lavirint::getBrojRedova() const {
+    return brojRedova;
+}
+
+int Lavirint::getBrojKolona() const {
+    return brojKolona;
+}
+
+void Lavirint::setBrojRedova(int brojRedova) {
+    this->brojRedova = brojRedova;
+}
+
+void Lavirint::setBrojKolona(int brojKolona) {
+    this->brojKolona = brojKolona;
+}
+
+Element& Lavirint::getElement(int x, int y) const {
+    return matrica[x][y];
+}
+
+void Lavirint::setElement(int x, int y, Element& element) {
+    matrica[x][y] = element;
+}
+
+
+
+
 
 
