@@ -53,6 +53,7 @@
 
 #include <iostream>
 #include "lavirint.hpp"
+#include "lavirint_utils.hpp"
 #include "robot.hpp"
 #include "minotaur.hpp"
 

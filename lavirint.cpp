@@ -1,4 +1,5 @@
 #include "lavirint.hpp"
+#include "lavirint_utils.hpp"
 
 Lavirint::Lavirint(int brojRedova, int brojKolona) {
     this->brojRedova = brojRedova;
@@ -39,6 +40,10 @@ Element& Lavirint::getElement(int x, int y) const {
 
 void Lavirint::setElement(int x, int y, Element& element) {
     matrica[x][y] = element;
+}
+
+void Lavirint::generisiLavirint() {
+    LavirintUtils::generisiLavirint(*this, 5);
 }
 
 

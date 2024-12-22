@@ -21,6 +21,8 @@
 				"robot.hpp",
 				"minotaur.cpp",
 				"minotaur.hpp",
+				"lavirint_utils.hpp",
+				"lavirint_utils.cpp",
 				"-o",
 				"${fileDirname}/${fileBasenameNoExtension}"
 			],

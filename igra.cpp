@@ -59,7 +59,7 @@ Igra::~Igra() {
 }
 
 void Igra::pokreniIgru() {
-    // treba 
+    lavirint->generisiLavirint();
 }
 
 void Igra::zavrsiIgru() {
