@@ -94,7 +94,6 @@ void LavirintUtils::generisiLavirint(Lavirint& lavirint, int brojPredmeta) {
         }
     }
 
-    // random pozicija u prvom redu za U
     while (true) {
         int randomKolona_U = rand() % (brojKolona - 2) + 1;
         if (vektorLavirint[1][randomKolona_U] == 0) {
@@ -103,7 +102,6 @@ void LavirintUtils::generisiLavirint(Lavirint& lavirint, int brojPredmeta) {
         }
     }
 
-    // random pozicija u zadnjem redu za I
     while (true) {
         int randomKolona_I = rand() % (brojKolona - 2) + 1;
         if (vektorLavirint[brojRedova - 2][randomKolona_I] == 0) {
@@ -112,18 +110,31 @@ void LavirintUtils::generisiLavirint(Lavirint& lavirint, int brojPredmeta) {
         }
     }
 
-    // koliko ima predmeta, toliko puta nasumično postavljamo predmet na prazninu
+    for (int i = 0; i < brojKolona; i++) {
+        if (matrica[0][i].getSimbol() == 'U') {
+            matrica[1][i] = Element(1, i, 'R');
+            break;
+        }
+        
+    }  
+
     for (int i = 0; i < brojPredmeta; i++) {
         while (true) {
             int randomRed = rand() % (brojRedova - 2) + 1;
             int randomKolona = rand() % (brojKolona - 2) + 1;
-            if (vektorLavirint[randomRed][randomKolona] == 0) {
+            if (matrica[randomRed][randomKolona].getSimbol() == ' ') {
                 matrica[randomRed][randomKolona] = Element(randomRed, randomKolona, 'P');
                 break;
             }
         }
     }
 
+    for (int i = 0; i < brojRedova; i++) {
+        for (int j = 0; j < brojKolona; j++) {
+            std::cout << matrica[i][j].getSimbol();
+        }
+        std::cout << std::endl;
+    }  
 
 
 
