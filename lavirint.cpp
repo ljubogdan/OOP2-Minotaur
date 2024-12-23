@@ -38,8 +38,16 @@ Element& Lavirint::getElement(int x, int y) const {
     return matrica[x][y];
 }
 
-void Lavirint::setElement(int x, int y, Element& element) {
+void Lavirint::setElement(int x, int y, const Element& element) {
     matrica[x][y] = element;
+}
+
+Element** Lavirint::getMatrica() const {
+    return matrica;
+}
+
+void Lavirint::setMatrica(Element** matrica) {
+    this->matrica = matrica;
 }
 
 void Lavirint::generisiLavirint() {

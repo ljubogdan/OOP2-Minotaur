@@ -1,97 +1,131 @@
 #include "lavirint_utils.hpp"
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <ctime>
 
-void randomWalk(Lavirint& lavirint, int startX, int startY, int endX, int endY) {
-    int dx[] = {0, 1, 0, -1};
-    int dy[] = {1, 0, -1, 0};
 
-    int x = startX, y = startY;
-    Element tempElement(x, y, ' ');
-    lavirint.setElement(x, y, tempElement);
+struct Ivica {
+    int x1, y1, x2, y2;
+};
 
-    while (x != endX || y != endY) {
-        std::vector<int> directions = {0, 1, 2, 3};
-        std::random_shuffle(directions.begin(), directions.end());
+DisjunktniSkup::DisjunktniSkup(int velicina) {
+    roditelj.resize(velicina);
+    rang.resize(velicina, 0);
+    for (int i = 0; i < velicina; i++) roditelj[i] = i;
+};
 
-        bool moved = false;
-        for (int i = 0; i < 4; i++) {
-            int nx = x + dx[directions[i]];
-            int ny = y + dy[directions[i]];
+int DisjunktniSkup::pronadji(int x) {
+    if (roditelj[x] != x) roditelj[x] = pronadji(roditelj[x]);
+    return roditelj[x];
+};
 
-            if (nx > 0 && ny > 0 && nx < lavirint.getBrojRedova() - 1 && ny < lavirint.getBrojKolona() - 1 &&
-                lavirint.getElement(nx, ny).getSimbol() == '#') {
-                Element tempElement(nx, ny, ' ');
-                lavirint.setElement(nx, ny, tempElement);
-                Element midElement((x + nx) / 2, (y + ny) / 2, ' ');
-                lavirint.setElement((x + nx) / 2, (y + ny) / 2, midElement);
-                x = nx;
-                y = ny;
-                moved = true;
-                break;
-            }
-        }
+bool DisjunktniSkup::spojiSkupove(int x, int y) {
+    int korenX = pronadji(x);
+    int korenY = pronadji(y);
+    if (korenX == korenY) return false;
 
-        if (!moved) {
-            // Ako je put zaglavljen, poveži direktno prema cilju
-            if (x < endX) x++;
-            else if (x > endX) x--;
-            else if (y < endY) y++;
-            else if (y > endY) y--;
-            Element tempElement(x, y, ' ');
-            lavirint.setElement(x, y, tempElement);
+    if (rang[korenX] < rang[korenY]) {
+        roditelj[korenX] = korenY;
+    } else if (rang[korenX] > rang[korenY]) {
+        roditelj[korenY] = korenX;
+    } else {
+        roditelj[korenY] = korenX;
+        rang[korenX]++;
+    }
+    return true;
+};
+
+
+
+void generisiVektorLavirint(std::vector<std::vector<int>>& lavirint) {
+    int redovi = lavirint.size();
+    int kolone = lavirint[0].size();
+    srand(time(0));
+
+    std::vector<Ivica> ivice;
+    for (int i = 1; i < redovi; i += 2) {
+        for (int j = 1; j < kolone; j += 2) {
+            if (i + 2 < redovi) ivice.push_back({i, j, i + 2, j});
+            if (j + 2 < kolone) ivice.push_back({i, j, i, j + 2});
         }
     }
-}
 
-    
+    for (size_t i = 0; i < ivice.size(); i++) {
+        int nasumicniIndeks = rand() % ivice.size();
+        std::swap(ivice[i], ivice[nasumicniIndeks]);
+    }
+
+    DisjunktniSkup skup((redovi / 2) * (kolone / 2));
+    for (int i = 0; i < redovi; i++) {
+        for (int j = 0; j < kolone; j++) {
+            lavirint[i][j] = 1;
+        }
+    }
+
+    for (auto& ivica : ivice) {
+        int celija1 = (ivica.x1 / 2) * (kolone / 2) + (ivica.y1 / 2);
+        int celija2 = (ivica.x2 / 2) * (kolone / 2) + (ivica.y2 / 2);
+
+        if (skup.spojiSkupove(celija1, celija2)) {
+            lavirint[ivica.x1][ivica.y1] = 0;
+            lavirint[ivica.x2][ivica.y2] = 0;
+            lavirint[(ivica.x1 + ivica.x2) / 2][(ivica.y1 + ivica.y2) / 2] = 0;
+        }
+    }
+};
+
+
+
 
 void LavirintUtils::generisiLavirint(Lavirint& lavirint, int brojPredmeta) {
-    srand(time(nullptr)); 
-
     int brojRedova = lavirint.getBrojRedova();
     int brojKolona = lavirint.getBrojKolona();
 
-    for (int i = 0; i < brojRedova; i++) { // postavi sve elemente na prazno polje
-        for (int j = 0; j < brojKolona; j++) {
-            Element element(i, j, '#');
-            lavirint.setElement(i, j, element);
-        }
-    }
+    std::vector<std::vector<int>> vektorLavirint(brojRedova, std::vector<int>(brojKolona, 1));
+    generisiVektorLavirint(vektorLavirint);
 
-    for (int i = 0; i < brojRedova; i++) { // postavi sve elemente na prazno polje
-        for (int j = 0; j < brojKolona; j++) {
-            Element element(i, j, '#');
-            lavirint.setElement(i, j, element);
-        }
-    }
 
-    int randomKolona_U = rand() % (brojKolona - 2) + 1; // postavljamo ulaz i izlaz
-    Element element(0, randomKolona_U, 'U');
-    lavirint.setElement(0, randomKolona_U, element);
+    auto matrica = lavirint.getMatrica();
 
-    int randomKolona_I = rand() % (brojKolona - 2) + 1;
-    element = Element(brojRedova - 1, randomKolona_I, 'I');
-    lavirint.setElement(brojRedova - 1, randomKolona_I, element);
-
-    randomWalk(lavirint, 1, randomKolona_U, brojRedova - 2, randomKolona_I);
-
-    int brojDodavanja = (brojRedova * brojKolona) / 5; // 20% zida pretvori u prolaze
-    for (int i = 0; i < brojDodavanja; i++) {
-        int x = rand() % (brojRedova - 2) + 1;
-        int y = rand() % (brojKolona - 2) + 1;
-        if (lavirint.getElement(x, y).getSimbol() == '#') {
-            Element tempElement(x, y, ' ');
-            lavirint.setElement(x, y, tempElement);
-        }
-    }
-    
     for (int i = 0; i < brojRedova; i++) {
         for (int j = 0; j < brojKolona; j++) {
-            std::cout << lavirint.getElement(i, j).getSimbol();
+            if (vektorLavirint[i][j] == 1) {
+                matrica[i][j] = Element(i, j, '#');
+            } else {
+                matrica[i][j] = Element(i, j, ' ');
+            }
         }
-        std::cout << std::endl;
     }
+
+    // random pozicija u prvom redu za U
+    while (true) {
+        int randomKolona_U = rand() % (brojKolona - 2) + 1;
+        if (vektorLavirint[1][randomKolona_U] == 0) {
+            matrica[0][randomKolona_U] = Element(0, randomKolona_U, 'U');
+            break;
+        }
+    }
+
+    // random pozicija u zadnjem redu za I
+    while (true) {
+        int randomKolona_I = rand() % (brojKolona - 2) + 1;
+        if (vektorLavirint[brojRedova - 2][randomKolona_I] == 0) {
+            matrica[brojRedova - 1][randomKolona_I] = Element(brojRedova - 1, randomKolona_I, 'I');
+            break;
+        }
+    }
+
+    // koliko ima predmeta, toliko puta nasumično postavljamo predmet na prazninu
+    for (int i = 0; i < brojPredmeta; i++) {
+        while (true) {
+            int randomRed = rand() % (brojRedova - 2) + 1;
+            int randomKolona = rand() % (brojKolona - 2) + 1;
+            if (vektorLavirint[randomRed][randomKolona] == 0) {
+                matrica[randomRed][randomKolona] = Element(randomRed, randomKolona, 'P');
+                break;
+            }
+        }
+    }
+
+
+
+
+    
 }

@@ -49,10 +49,24 @@
 #define LAVIRINT_UTILS_HPP
 
 #include "lavirint.hpp"
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <ctime>
 
 class LavirintUtils {
     public:
         static void generisiLavirint(Lavirint& lavirint, int brojPredmeta);
+};
+
+class DisjunktniSkup {
+    private:
+        std::vector<int> roditelj;
+        std::vector<int> rang;
+    public:
+        DisjunktniSkup(int velicina);
+        int pronadji(int x);
+        bool spojiSkupove(int x, int y);
 };
 
 #endif // LAVIRINT_UTILS_HPP
