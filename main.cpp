@@ -61,7 +61,7 @@ void uvodnaPoruka() {
     std::cout << CYAN << "2. Broj predmeta mora biti najmanje 3." << RESET << std::endl;
     std::cout << CYAN << "3. Robot mora pronaci izlaz i izbeci Minotaura!" << RESET << std::endl;
     std::cout << CYAN << "4. Unesite komandu 'Q' da biste zavrsili igru." << RESET << std::endl;
-    std::cout << GREEN << "-------------------------------------" << RESET << std::endl;
+    std::cout << CYAN << "----------------------------------------------" << RESET << std::endl;
 }
 
 int main() {
@@ -69,16 +69,28 @@ int main() {
 
     int brojRedova, brojKolona, brojPredmeta;
 
-    std::cout << GREEN << "Unesite broj redova lavirinta: " << RESET;
-    std::cin >> brojRedova;
-    std::cout << GREEN << "Unesite broj kolona lavirinta: " << RESET;
-    std::cin >> brojKolona;
-    std::cout << GREEN << "Unesite broj predmeta: " << RESET;
-    std::cin >> brojPredmeta;
+    while (true) {
+        std::cout << GREEN << "\nUnesite broj redova lavirinta: " << RESET;
+        std::cin >> brojRedova;
+        std::cout << GREEN << "Unesite broj kolona lavirinta: " << RESET;
+        std::cin >> brojKolona;
+        std::cout << GREEN << "Unesite broj predmeta: " << RESET;
+        std::cin >> brojPredmeta;
 
-    if (brojRedova < 15 || brojKolona < 15 || brojPredmeta < 3) {
-        std::cerr << RED << "Greska: Broj redova i kolona mora biti veci od 15, a broj predmeta veci od 3." << RESET << std::endl;
-        return 1;
+        // ispravljamo da broj kolona i redova bude neparan
+        if (brojRedova % 2 == 0) {
+            brojRedova++;
+        }
+        if (brojKolona % 2 == 0) {
+            brojKolona++;
+        }
+
+        if (brojRedova < 15 || brojKolona < 15 || brojPredmeta < 3) {
+            std::cout << RED << "Greska: Broj redova i kolona mora biti veci od 15, a broj predmeta veci od 3." << RESET << std::endl;
+            
+        } else {
+            break;
+        }
     }
 
     Igra igra(brojRedova, brojKolona, brojPredmeta);

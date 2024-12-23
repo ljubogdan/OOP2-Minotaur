@@ -53,10 +53,14 @@
 #include <algorithm>
 #include <vector>
 #include <ctime>
+#include <chrono>
 
 class LavirintUtils {
     public:
         static void generisiLavirint(Lavirint& lavirint, int brojPredmeta);
+        static void postaviRobota(Lavirint& lavirint);
+        static void postaviMinotaura(Lavirint& lavirint);
+        static void postaviPredmete(Lavirint& lavirint, int brojPredmeta);
 };
 
 class DisjunktniSkup {

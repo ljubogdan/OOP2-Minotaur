@@ -78,6 +78,19 @@ class Igra {
         ~Igra();
         void pokreniIgru();
         void zavrsiIgru();
+
+        Lavirint* getLavirint() const;
+        Robot* getRobot() const;
+        Minotaur* getMinotaur() const;
+        int getBrojPredmeta() const;
+        bool getKrajIgre() const;
+        int getTrajanjeEfekta() const;
+        void setLavirint(Lavirint* lavirint);
+        void setRobot(Robot* robot);
+        void setMinotaur(Minotaur* minotaur);
+        void setBrojPredmeta(int brojPredmeta);
+        void setKrajIgre(bool krajIgre);
+        void setTrajanjeEfekta(int trajanjeEfekta);
 };
 
 #endif // IGRA_HPP

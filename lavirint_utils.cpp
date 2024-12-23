@@ -1,5 +1,7 @@
 #include "lavirint_utils.hpp"
 
+#define BOLDGREEN "\033[1m\033[32m"   
+#define RESET "\033[0m"
 
 struct Ivica {
     int x1, y1, x2, y2;
@@ -31,6 +33,7 @@ bool DisjunktniSkup::spojiSkupove(int x, int y) {
     }
     return true;
 };
+
 
 
 
@@ -72,9 +75,53 @@ void generisiVektorLavirint(std::vector<std::vector<int>>& lavirint) {
 };
 
 
+void LavirintUtils::postaviRobota(Lavirint& lavirint) {
+    int brojKolona = lavirint.getBrojKolona();
+    Element** matrica = lavirint.getMatrica();
+    for (int i = 0; i < brojKolona; i++) {
+        if (matrica[0][i].getSimbol() == 'U') {
+            matrica[1][i] = Element(1, i, 'R');
+            break;
+        }
+    }
+}
 
+void LavirintUtils::postaviPredmete(Lavirint& lavirint, int brojPredmeta) {
+    int brojRedova = lavirint.getBrojRedova();
+    int brojKolona = lavirint.getBrojKolona();
+    Element** matrica = lavirint.getMatrica();
+
+    for (int i = 0; i < brojPredmeta; i++) {
+        while (true) {
+            int randomRed = rand() % (brojRedova - 2) + 1;
+            int randomKolona = rand() % (brojKolona - 2) + 1;
+            if (matrica[randomRed][randomKolona].getSimbol() == ' ') {
+                matrica[randomRed][randomKolona] = Element(randomRed, randomKolona, 'P');
+                break;
+            }
+        }
+    }
+}
+
+void LavirintUtils::postaviMinotaura(Lavirint& lavirint) {
+    // postavljamo minotaura na random poziciju na donju polovinu lavirinta
+    int brojRedova = lavirint.getBrojRedova();
+    int brojKolona = lavirint.getBrojKolona();
+    Element** matrica = lavirint.getMatrica();
+
+    while (true) {
+        int randomRed = rand() % (brojRedova - 2) + 1;
+        int randomKolona = rand() % (brojKolona - 2) + 1;
+        if (matrica[randomRed][randomKolona].getSimbol() == ' ' && randomRed >= brojRedova / 2) {
+            matrica[randomRed][randomKolona] = Element(randomRed, randomKolona, 'M');
+            break;
+        }
+    }
+}
 
 void LavirintUtils::generisiLavirint(Lavirint& lavirint, int brojPredmeta) {
+    auto start = std::chrono::high_resolution_clock::now();
+    
     int brojRedova = lavirint.getBrojRedova();
     int brojKolona = lavirint.getBrojKolona();
 
@@ -110,33 +157,12 @@ void LavirintUtils::generisiLavirint(Lavirint& lavirint, int brojPredmeta) {
         }
     }
 
-    for (int i = 0; i < brojKolona; i++) {
-        if (matrica[0][i].getSimbol() == 'U') {
-            matrica[1][i] = Element(1, i, 'R');
-            break;
-        }
-        
-    }  
+    postaviRobota(lavirint);
+    postaviPredmete(lavirint, brojPredmeta);
+    postaviMinotaura(lavirint);
 
-    for (int i = 0; i < brojPredmeta; i++) {
-        while (true) {
-            int randomRed = rand() % (brojRedova - 2) + 1;
-            int randomKolona = rand() % (brojKolona - 2) + 1;
-            if (matrica[randomRed][randomKolona].getSimbol() == ' ') {
-                matrica[randomRed][randomKolona] = Element(randomRed, randomKolona, 'P');
-                break;
-            }
-        }
-    }
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> vreme = end - start;
 
-    for (int i = 0; i < brojRedova; i++) {
-        for (int j = 0; j < brojKolona; j++) {
-            std::cout << matrica[i][j].getSimbol();
-        }
-        std::cout << std::endl;
-    }  
-
-
-
-    
+    std::cout << BOLDGREEN << "\nVreme potrebno za generisanje lavirinta: " << vreme.count() << " sekundi" << RESET << std::endl;
 }

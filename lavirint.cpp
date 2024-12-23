@@ -50,8 +50,8 @@ void Lavirint::setMatrica(Element** matrica) {
     this->matrica = matrica;
 }
 
-void Lavirint::generisiLavirint() {
-    LavirintUtils::generisiLavirint(*this, 5);
+void Lavirint::generisiLavirint(int brojPredmeta) {
+    LavirintUtils::generisiLavirint(*this, brojPredmeta);
 }
 
 

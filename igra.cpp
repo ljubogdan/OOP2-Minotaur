@@ -58,8 +58,56 @@ Igra::~Igra() {
     delete minotaur;
 }
 
+Lavirint* Igra::getLavirint() const {
+    return lavirint;
+}
+
+Robot* Igra::getRobot() const {
+    return robot;
+}
+
+Minotaur* Igra::getMinotaur() const {
+    return minotaur;
+}
+
+int Igra::getBrojPredmeta() const {
+    return brojPredmeta;
+}
+
+bool Igra::getKrajIgre() const {
+    return krajIgre;
+}
+
+int Igra::getTrajanjeEfekta() const {
+    return trajanjeEfekta;
+}
+
+void Igra::setLavirint(Lavirint* lavirint) {
+    this->lavirint = lavirint;
+}
+
+void Igra::setRobot(Robot* robot) {
+    this->robot = robot;
+}
+
+void Igra::setMinotaur(Minotaur* minotaur) {
+    this->minotaur = minotaur;
+}
+
+void Igra::setBrojPredmeta(int brojPredmeta) {
+    this->brojPredmeta = brojPredmeta;
+}
+
+void Igra::setKrajIgre(bool krajIgre) {
+    this->krajIgre = krajIgre;
+}
+
+void Igra::setTrajanjeEfekta(int trajanjeEfekta) {
+    this->trajanjeEfekta = trajanjeEfekta;
+}
+
 void Igra::pokreniIgru() {
-    lavirint->generisiLavirint();
+    lavirint->generisiLavirint(brojPredmeta);
 }
 
 void Igra::zavrsiIgru() {

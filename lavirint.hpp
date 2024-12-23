@@ -68,7 +68,7 @@ class Lavirint {
         Element& getElement(int x, int y) const;
         void setElement(int x, int y, const Element& element);
 
-        void generisiLavirint();
+        void generisiLavirint(int brojPredmeta);
 };
 
 #endif // LAVIRINT_HPP
