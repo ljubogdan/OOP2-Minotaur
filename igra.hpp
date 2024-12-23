@@ -56,6 +56,8 @@
 #include "lavirint_utils.hpp"
 #include "robot.hpp"
 #include "minotaur.hpp"
+#include <thread>
+#include <chrono>
 
 #define RESET "\033[0m"
 #define RED "\033[31m"
@@ -64,6 +66,11 @@
 #define BLUE "\033[34m"
 #define MAGENTA "\033[35m"
 #define CYAN "\033[36m"
+
+#define BOLDRED "\033[1m\033[31m"
+#define BOLDDARKBLUE "\033[1m\033[34m"
+#define BOLDPINK "\033[1m\033[35m"
+#define BOLDGREEN "\033[1m\033[32m"
 
 class Igra {
     private:

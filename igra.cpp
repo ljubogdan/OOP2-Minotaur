@@ -108,6 +108,50 @@ void Igra::setTrajanjeEfekta(int trajanjeEfekta) {
 
 void Igra::pokreniIgru() {
     lavirint->generisiLavirint(brojPredmeta);
+
+    Element** matrica = lavirint->getMatrica();
+    for (int i = 0; i < lavirint->getBrojRedova(); i++) {
+        for (int j = 0; j < lavirint->getBrojKolona(); j++) {
+            if (matrica[i][j].getSimbol() == 'R') {
+                robot = new Robot(i, j, 'R');
+                matrica[i][j] = *robot;
+            } else if (matrica[i][j].getSimbol() == 'M') {
+                minotaur = new Minotaur(i, j, 'M');
+            }
+        }
+    }
+
+    std::cout << std::endl;
+    for (int i = 0; i < lavirint->getBrojRedova(); i++) {
+        for (int j = 0; j < lavirint->getBrojKolona(); j++) {
+            if (matrica[i][j].getSimbol() == 'R') {
+                std::cout << BOLDDARKBLUE << matrica[i][j].getSimbol() << RESET;
+            } else if (matrica[i][j].getSimbol() == 'M') {
+                std::cout << BOLDRED << matrica[i][j].getSimbol() << RESET;
+            } else if (matrica[i][j].getSimbol() == 'U' || matrica[i][j].getSimbol() == 'I') {
+                std::cout << BOLDGREEN << matrica[i][j].getSimbol() << RESET;
+            } else if (matrica[i][j].getSimbol() == 'P') {
+                std::cout << BOLDPINK << matrica[i][j].getSimbol() << RESET;
+            } else {
+                std::cout << matrica[i][j].getSimbol();
+            }
+        }
+        std::cout << std::endl;
+    }
+
+    // napravimo brojač koji će početi igru za 3 sekunde
+    int brojac = 5;
+    // ali tako da ispisuje 3 2 1
+    std::cout << BOLDDARKBLUE << "\nIgra počinje za: \n" << RESET << std::endl;
+    while (brojac > 0) {
+        std::cout << BOLDGREEN << brojac << RESET << std::endl;
+        brojac--;
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
+    
+
+
 }
 
 void Igra::zavrsiIgru() {
