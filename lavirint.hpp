@@ -67,7 +67,7 @@ class Lavirint {
         void setMatrica(Element*** matrica);
 
         Element& getElement(int x, int y) const;
-        void setElement(int x, int y, const Element& element);
+        void setElement(int x, int y, Element* element);
 
         void generisiLavirint(int brojPredmeta);
 };

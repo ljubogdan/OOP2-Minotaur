@@ -56,7 +56,7 @@ class Predmet : public Element {
     private:
         std::string efekat;
     public:
-        Predmet(int x, int y, char simbol, std::string efekat);
+        Predmet(char simbol, std::string efekat);
         ~Predmet();
 
         std::string getEfekat() const;

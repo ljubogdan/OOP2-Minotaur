@@ -55,6 +55,8 @@
 #include <ctime>
 #include <chrono>
 #include <random>
+#include "robot.hpp"
+#include "minotaur.hpp"
 
 class LavirintUtils {
     public:

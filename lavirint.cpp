@@ -9,7 +9,7 @@ Lavirint::Lavirint(int brojRedova, int brojKolona) {
     for (int i = 0; i < brojRedova; i++) {
         matrica[i] = new Element*[brojKolona];
         for (int j = 0; j < brojKolona; j++) {
-            matrica[i][j] = new Element(i, j, ' ');
+            matrica[i][j] = new Element(' ');
         }
     }
 }
@@ -44,8 +44,11 @@ Element& Lavirint::getElement(int x, int y) const {
     return *matrica[x][y];
 }
 
-void Lavirint::setElement(int x, int y, const Element& element) {
-    *matrica[x][y] = element;
+void Lavirint::setElement(int x, int y, Element* element) {
+    if (matrica[x][y] != nullptr) {
+        delete matrica[x][y];
+    }
+    matrica[x][y] = element;
 }
 
 Element*** Lavirint::getMatrica() const {

@@ -49,25 +49,17 @@
 
 Igra::Igra(int brojRedova, int brojKolona, int brojPredmeta) 
     : brojPredmeta(brojPredmeta), krajIgre(false), trajanjeEfekta(0),
-    lavirint(new Lavirint(brojRedova, brojKolona)), robot(nullptr), minotaur(nullptr), trenutniEfekat("") {
+    lavirint(new Lavirint(brojRedova, brojKolona)), trenutniEfekat(""), 
+    robotX(0), robotY(0), minotaurX(0), minotaurY(0),
+    robotPobedio(false), minotaurPobedio(false), minotaurZiv(true) {
 }
 
 Igra::~Igra() {
     delete lavirint;
-    delete robot;
-    delete minotaur;
 }
 
 Lavirint* Igra::getLavirint() const {
     return lavirint;
-}
-
-Robot* Igra::getRobot() const {
-    return robot;
-}
-
-Minotaur* Igra::getMinotaur() const {
-    return minotaur;
 }
 
 int Igra::getBrojPredmeta() const {
@@ -84,14 +76,6 @@ int Igra::getTrajanjeEfekta() const {
 
 void Igra::setLavirint(Lavirint* lavirint) {
     this->lavirint = lavirint;
-}
-
-void Igra::setRobot(Robot* robot) {
-    this->robot = robot;
-}
-
-void Igra::setMinotaur(Minotaur* minotaur) {
-    this->minotaur = minotaur;
 }
 
 void Igra::setBrojPredmeta(int brojPredmeta) {
@@ -112,6 +96,62 @@ std::string Igra::getTrenutniEfekat() const {
 
 void Igra::setTrenutniEfekat(std::string trenutniEfekat) {
     this->trenutniEfekat = trenutniEfekat;
+}
+
+int Igra::getRobotX() const {
+    return robotX;
+}
+
+int Igra::getRobotY() const {
+    return robotY;
+}
+
+int Igra::getMinotaurX() const {
+    return minotaurX;
+}
+
+int Igra::getMinotaurY() const {
+    return minotaurY;
+}
+
+void Igra::setRobotX(int robotX) {
+    this->robotX = robotX;
+}
+
+void Igra::setRobotY(int robotY) {
+    this->robotY = robotY;
+}
+
+void Igra::setMinotaurX(int minotaurX) {
+    this->minotaurX = minotaurX;
+}
+
+void Igra::setMinotaurY(int minotaurY) {
+    this->minotaurY = minotaurY;
+}
+
+bool Igra::getRobotPobedio() const {
+    return robotPobedio;
+}
+
+bool Igra::getMinotaurPobedio() const {
+    return minotaurPobedio;
+}
+
+void Igra::setRobotPobedio(bool robotPobedio) {
+    this->robotPobedio = robotPobedio;
+}
+
+void Igra::setMinotaurPobedio(bool minotaurPobedio) {
+    this->minotaurPobedio = minotaurPobedio;
+}
+
+bool Igra::getMinotaurZiv() const {
+    return minotaurZiv;
+}
+
+void Igra::setMinotaurZiv(bool minotaurStatus) {
+    minotaurZiv = minotaurStatus;
 }
 
 void Igra::prikaziLavirint() {
@@ -162,14 +202,16 @@ void Igra::pokreniIgru() {
     for (int i = 0; i < lavirint->getBrojRedova(); i++) {
         for (int j = 0; j < lavirint->getBrojKolona(); j++) {
             if (matrica[i][j]->getSimbol() == 'R') {
-                matrica[i][j] = new Robot(i, j, 'R');
+                setRobotX(i);
+                setRobotY(j);
             } else if (matrica[i][j]->getSimbol() == 'M') {
-                matrica[i][j] = new Minotaur(i, j, 'M');
+                setMinotaurX(i);
+                setMinotaurY(j);
             }
         }
     }
 
-    int brojac = 5;
+    int brojac = 3;
     while (brojac > 0) {
         std::cout << "\r" << BOLDDARKBLUE << "Igra počinje za " << BOLDGREEN << brojac << RESET << " " << std::flush;
         brojac--;
@@ -185,15 +227,35 @@ void Igra::pokreniIgru() {
         if (komanda == 'q' || komanda == 'Q') {
             setKrajIgre(true);
             break;
+        } else if (komanda == 'w' || komanda == 'W') {
+            pomeriRobota(getRobotX() - 1, getRobotY());
+        } else if (komanda == 's' || komanda == 'S') {
+            pomeriRobota(getRobotX() + 1, getRobotY());
+        } else if (komanda == 'a' || komanda == 'A') {
+            pomeriRobota(getRobotX(), getRobotY() - 1);
+        } else if (komanda == 'd' || komanda == 'D') {
+            pomeriRobota(getRobotX(), getRobotY() + 1);
         } else {
-            system("clear"); // ili system("cls") za Windows
+            std::cout << "Nepoznata komanda!" << std::endl;
         }
     }
-
-
 
 }
 
 void Igra::zavrsiIgru() {
     std::cout << "Igra zavrsena!" << std::endl;
+}
+
+void Igra::pomeriRobota(int x, int y) {
+    if (lavirint->getElement(x, y).getSimbol() == 'I') {
+        return;
+    }
+    setRobotPobedio(true);
+    setKrajIgre(true);
+    Element* element = new Element(' ');
+    lavirint->setElement(getRobotX(), getRobotY(), element);
+    setRobotX(x);
+    setRobotY(y);
+    Robot* robot = new Robot('R');
+    lavirint->setElement(x, y, robot);
 }

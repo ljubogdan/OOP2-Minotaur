@@ -51,7 +51,8 @@
 
 class Minotaur : public Element {
     public:
-        Minotaur(int x, int y, char simbol);
+        Minotaur(char simbol);
         ~Minotaur();
-        void pomeriNa(int x, int y);
+
+        Minotaur* kloniraj() const override;
 };

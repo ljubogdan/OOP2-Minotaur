@@ -54,8 +54,6 @@
 #include <iostream>
 #include "lavirint.hpp"
 #include "lavirint_utils.hpp"
-#include "robot.hpp"
-#include "minotaur.hpp"
 #include <thread>
 #include <chrono>
 #include <termio.h>
@@ -77,13 +75,17 @@
 class Igra {
     private:
         Lavirint* lavirint;
-        Robot* robot;
-        Minotaur* minotaur;
         int brojPredmeta;
         bool krajIgre;
+        bool robotPobedio;
+        bool minotaurPobedio;
+        bool minotaurZiv;
         int trajanjeEfekta;
 
         std::string trenutniEfekat;
+
+        int robotX, robotY;
+        int minotaurX, minotaurY;
 
     public:
         Igra(int brojRedova, int brojKolona, int brojPredmeta);
@@ -92,14 +94,10 @@ class Igra {
         void zavrsiIgru();
 
         Lavirint* getLavirint() const;
-        Robot* getRobot() const;
-        Minotaur* getMinotaur() const;
         int getBrojPredmeta() const;
         bool getKrajIgre() const;
         int getTrajanjeEfekta() const;
         void setLavirint(Lavirint* lavirint);
-        void setRobot(Robot* robot);
-        void setMinotaur(Minotaur* minotaur);
         void setBrojPredmeta(int brojPredmeta);
         void setKrajIgre(bool krajIgre);
         void setTrajanjeEfekta(int trajanjeEfekta);
@@ -108,6 +106,25 @@ class Igra {
 
 
         void prikaziLavirint();
+
+        int getRobotX() const;
+        int getRobotY() const;
+        int getMinotaurX() const;
+        int getMinotaurY() const;
+        void setRobotX(int robotX);
+        void setRobotY(int robotY);
+        void setMinotaurX(int minotaurX);
+        void setMinotaurY(int minotaurY);
+
+        void pomeriRobota(int x, int y);
+        void pomeriMinotauraRandom();
+
+        bool getRobotPobedio() const;
+        bool getMinotaurPobedio() const;
+        void setRobotPobedio(bool robotPobedio);
+        void setMinotaurPobedio(bool minotaurPobedio);
+        bool getMinotaurZiv() const;
+        void setMinotaurZiv(bool minotaurStatus);
 };
 
 #endif // IGRA_HPP

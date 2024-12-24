@@ -1,6 +1,6 @@
 #include "predmeti.hpp"
 
-Predmet::Predmet(int x, int y, char simbol, std::string efekat) : Element(x, y, simbol), efekat(efekat) {
+Predmet::Predmet(char simbol, std::string efekat) : Element(simbol), efekat(efekat) {
 }
 
 Predmet::~Predmet() {

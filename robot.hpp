@@ -55,17 +55,13 @@
 
 class Robot : public Element {
     public:
-        Robot(int x, int y, char simbol);
+        Robot(char simbol);
         ~Robot();
         
-        int getX() const;
-        int getY() const;
         char getSimbol() const;
-        void setX(int x);
-        void setY(int y);
         void setSimbol(char simbol);
-        
-        void pomeriNa(int x, int y);
+
+        Robot* kloniraj() const override;
 };
 
 #endif // ROBOT_HPP

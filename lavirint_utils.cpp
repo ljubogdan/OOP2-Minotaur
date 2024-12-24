@@ -80,7 +80,8 @@ void LavirintUtils::postaviRobota(Lavirint& lavirint) {
     Element*** matrica = lavirint.getMatrica();
     for (int i = 0; i < brojKolona; i++) {
         if (matrica[0][i]->getSimbol() == 'U') {
-            matrica[1][i] = new Element(1, i, 'R');
+            delete matrica[1][i];
+            matrica[1][i] = new Robot('R');
             break;
         }
     }
@@ -99,7 +100,8 @@ void LavirintUtils::postaviPredmete(Lavirint& lavirint, int brojPredmeta) {
             int randomKolona = rand() % (brojKolona - 2) + 1;
             if (matrica[randomRed][randomKolona]->getSimbol() == ' ') {
                 int randomEfekat = rand() % 4;
-                matrica[randomRed][randomKolona] = new Predmet(randomRed, randomKolona, 'P', efekti[randomEfekat]);
+                delete matrica[randomRed][randomKolona];
+                matrica[randomRed][randomKolona] = new Predmet('P', efekti[randomEfekat]);
                 break;
             }
         }
@@ -116,7 +118,8 @@ void LavirintUtils::postaviMinotaura(Lavirint& lavirint) {
         int randomRed = rand() % (brojRedova - 2) + 1;
         int randomKolona = rand() % (brojKolona - 2) + 1;
         if (matrica[randomRed][randomKolona]->getSimbol() == ' ' && randomRed >= brojRedova / 2) {
-            matrica[randomRed][randomKolona] = new Element(randomRed, randomKolona, 'M');
+            delete matrica[randomRed][randomKolona];
+            matrica[randomRed][randomKolona] = new Minotaur('M');
             break;
         }
     }
@@ -137,9 +140,9 @@ void LavirintUtils::generisiLavirint(Lavirint& lavirint, int brojPredmeta) {
     for (int i = 0; i < brojRedova; i++) {
         for (int j = 0; j < brojKolona; j++) {
             if (vektorLavirint[i][j] == 1) {
-                matrica[i][j] = new Element(i, j, '#');
+                matrica[i][j] = new Element('#');
             } else {
-                matrica[i][j] = new Element(i, j, ' ');
+                matrica[i][j] = new Element(' ');
             }
         }
     }
@@ -147,7 +150,8 @@ void LavirintUtils::generisiLavirint(Lavirint& lavirint, int brojPredmeta) {
     while (true) {
         int randomKolona_U = rand() % (brojKolona - 2) + 1;
         if (vektorLavirint[1][randomKolona_U] == 0) {
-            matrica[0][randomKolona_U] = new Element(0, randomKolona_U, 'U');
+            delete matrica[0][randomKolona_U];
+            matrica[0][randomKolona_U] = new Element('U');
             break;
         }
     }
@@ -155,7 +159,8 @@ void LavirintUtils::generisiLavirint(Lavirint& lavirint, int brojPredmeta) {
     while (true) {
         int randomKolona_I = rand() % (brojKolona - 2) + 1;
         if (vektorLavirint[brojRedova - 2][randomKolona_I] == 0) {
-            matrica[brojRedova - 1][randomKolona_I] = new Element(brojRedova - 1, randomKolona_I, 'I');
+            delete matrica[brojRedova - 1][randomKolona_I];
+            matrica[brojRedova - 1][randomKolona_I] = new Element('I');
             break;
         }
     }

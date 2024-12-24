@@ -50,18 +50,15 @@
 
 class Element {
     protected:
-        int x, y;
         char simbol;
     public:
-        Element(int x, int y, char simbol);
+        Element(char simbol);
         Element() = default;
         virtual ~Element();
-        int getX() const;
-        int getY() const;
         char getSimbol() const;
-        void setX(int x);
-        void setY(int y);
         void setSimbol(char simbol);
+
+        virtual Element* kloniraj() const;
 };
 
 #endif // ELEMENT_HPP
