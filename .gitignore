@@ -1,1 +1,13 @@
 main
+main_program
+lavirint_utils.o
+lavirint_utils.a
+igra
+igra.o
+igra.a
+lavirint.o
+lavirint.a
+main.o
+main_program.o
+main_program.a
+liblavirint_utils.a

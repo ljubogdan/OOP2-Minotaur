@@ -115,20 +115,20 @@ void Igra::setTrenutniEfekat(std::string trenutniEfekat) {
 }
 
 void Igra::prikaziLavirint() {
-    Element** matrica = lavirint->getMatrica();
+    Element*** matrica = lavirint->getMatrica();
     for (int i = 0; i < lavirint->getBrojRedova(); i++) {
         std::cout << "    ";
         for (int j = 0; j < lavirint->getBrojKolona(); j++) {
-            if (matrica[i][j].getSimbol() == 'R') {
-                std::cout << BOLDDARKBLUE << matrica[i][j].getSimbol() << RESET;
-            } else if (matrica[i][j].getSimbol() == 'M') {
-                std::cout << BOLDRED << matrica[i][j].getSimbol() << RESET;
-            } else if (matrica[i][j].getSimbol() == 'U' || matrica[i][j].getSimbol() == 'I') {
-                std::cout << BOLDGREEN << matrica[i][j].getSimbol() << RESET;
-            } else if (matrica[i][j].getSimbol() == 'P') {
-                std::cout << BOLDPINK << matrica[i][j].getSimbol() << RESET;
+            if (matrica[i][j]->getSimbol() == 'R') {
+                std::cout << BOLDDARKBLUE << matrica[i][j]->getSimbol() << RESET;
+            } else if (matrica[i][j]->getSimbol() == 'M') {
+                std::cout << BOLDRED << matrica[i][j]->getSimbol() << RESET;
+            } else if (matrica[i][j]->getSimbol() == 'U' || matrica[i][j]->getSimbol() == 'I') {
+                std::cout << BOLDGREEN << matrica[i][j]->getSimbol() << RESET;
+            } else if (matrica[i][j]->getSimbol() == 'P') {
+                std::cout << BOLDPINK << matrica[i][j]->getSimbol() << RESET;
             } else {
-                std::cout << matrica[i][j].getSimbol();
+                std::cout << matrica[i][j]->getSimbol();
             }
         }
         std::cout << std::endl;
@@ -158,16 +158,13 @@ char getKarakter() {
 void Igra::pokreniIgru() {
     lavirint->generisiLavirint(brojPredmeta);
 
-    Element** matrica = lavirint->getMatrica();
+    Element*** matrica = lavirint->getMatrica();
     for (int i = 0; i < lavirint->getBrojRedova(); i++) {
         for (int j = 0; j < lavirint->getBrojKolona(); j++) {
-            if (matrica[i][j].getSimbol() == 'R') {
-                robot = new Robot(i, j, 'R');
-                matrica[i][j] = *robot;
-            } else if (matrica[i][j].getSimbol() == 'M') {
-                minotaur = new Minotaur(i, j, 'M');
-                matrica[i][j] = *minotaur;
-                std::cout << typeid(matrica[i][j]).name() << std::endl;
+            if (matrica[i][j]->getSimbol() == 'R') {
+                matrica[i][j] = new Robot(i, j, 'R');
+            } else if (matrica[i][j]->getSimbol() == 'M') {
+                matrica[i][j] = new Minotaur(i, j, 'M');
             }
         }
     }
@@ -188,6 +185,8 @@ void Igra::pokreniIgru() {
         if (komanda == 'q' || komanda == 'Q') {
             setKrajIgre(true);
             break;
+        } else {
+            system("clear"); // ili system("cls") za Windows
         }
     }
 

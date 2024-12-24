@@ -55,16 +55,16 @@ class Lavirint {
     private:
         int brojRedova;
         int brojKolona;
-        Element** matrica;
+        Element*** matrica;
     public:
         Lavirint(int brojRedova, int brojKolona);
         ~Lavirint();
         int getBrojRedova() const;
         int getBrojKolona() const;
-        Element** getMatrica() const;
+        Element*** getMatrica() const;
         void setBrojRedova(int brojRedova);
         void setBrojKolona(int brojKolona);
-        void setMatrica(Element** matrica);
+        void setMatrica(Element*** matrica);
 
         Element& getElement(int x, int y) const;
         void setElement(int x, int y, const Element& element);
