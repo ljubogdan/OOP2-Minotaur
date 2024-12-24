@@ -54,6 +54,7 @@
 #include <vector>
 #include <ctime>
 #include <chrono>
+#include <random>
 
 class LavirintUtils {
     public:

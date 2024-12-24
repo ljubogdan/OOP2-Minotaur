@@ -49,6 +49,7 @@
 Ток игре и руковање датотекама треба имплементирати као одвојене класе*/
 
 #include "element.hpp"
+#include "predmeti.hpp"
 
 class Lavirint {
     private:

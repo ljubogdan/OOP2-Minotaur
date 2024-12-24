@@ -91,12 +91,15 @@ void LavirintUtils::postaviPredmete(Lavirint& lavirint, int brojPredmeta) {
     int brojKolona = lavirint.getBrojKolona();
     Element** matrica = lavirint.getMatrica();
 
+    std::string efekti[] = {"Magla rata", "Mač", "Štit", "Čekić"};
+
     for (int i = 0; i < brojPredmeta; i++) {
         while (true) {
             int randomRed = rand() % (brojRedova - 2) + 1;
             int randomKolona = rand() % (brojKolona - 2) + 1;
             if (matrica[randomRed][randomKolona].getSimbol() == ' ') {
-                matrica[randomRed][randomKolona] = Element(randomRed, randomKolona, 'P');
+                int randomEfekat = rand() % 4;
+                matrica[randomRed][randomKolona] = Predmet(randomRed, randomKolona, 'P', efekti[randomEfekat]);
                 break;
             }
         }
@@ -164,5 +167,5 @@ void LavirintUtils::generisiLavirint(Lavirint& lavirint, int brojPredmeta) {
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> vreme = end - start;
 
-    std::cout << BOLDGREEN << "\nVreme potrebno za generisanje lavirinta: " << vreme.count() << " sekundi" << RESET << std::endl;
+    std::cout << BOLDGREEN << "\nLavirint generisan za " << vreme.count() << " sekundi\n" << RESET << std::endl;
 }

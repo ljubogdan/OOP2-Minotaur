@@ -58,6 +58,8 @@
 #include "minotaur.hpp"
 #include <thread>
 #include <chrono>
+#include <termio.h>
+#include <unistd.h>
 
 #define RESET "\033[0m"
 #define RED "\033[31m"
@@ -80,6 +82,9 @@ class Igra {
         int brojPredmeta;
         bool krajIgre;
         int trajanjeEfekta;
+
+        std::string trenutniEfekat;
+
     public:
         Igra(int brojRedova, int brojKolona, int brojPredmeta);
         ~Igra();
@@ -98,6 +103,11 @@ class Igra {
         void setBrojPredmeta(int brojPredmeta);
         void setKrajIgre(bool krajIgre);
         void setTrajanjeEfekta(int trajanjeEfekta);
+        std::string getTrenutniEfekat() const;
+        void setTrenutniEfekat(std::string trenutniEfekat);
+
+
+        void prikaziLavirint();
 };
 
 #endif // IGRA_HPP

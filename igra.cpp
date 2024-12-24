@@ -49,7 +49,7 @@
 
 Igra::Igra(int brojRedova, int brojKolona, int brojPredmeta) 
     : brojPredmeta(brojPredmeta), krajIgre(false), trajanjeEfekta(0),
-    lavirint(new Lavirint(brojRedova, brojKolona)), robot(nullptr), minotaur(nullptr) {
+    lavirint(new Lavirint(brojRedova, brojKolona)), robot(nullptr), minotaur(nullptr), trenutniEfekat("") {
 }
 
 Igra::~Igra() {
@@ -106,23 +106,18 @@ void Igra::setTrajanjeEfekta(int trajanjeEfekta) {
     this->trajanjeEfekta = trajanjeEfekta;
 }
 
-void Igra::pokreniIgru() {
-    lavirint->generisiLavirint(brojPredmeta);
+std::string Igra::getTrenutniEfekat() const {
+    return trenutniEfekat;
+}
 
+void Igra::setTrenutniEfekat(std::string trenutniEfekat) {
+    this->trenutniEfekat = trenutniEfekat;
+}
+
+void Igra::prikaziLavirint() {
     Element** matrica = lavirint->getMatrica();
     for (int i = 0; i < lavirint->getBrojRedova(); i++) {
-        for (int j = 0; j < lavirint->getBrojKolona(); j++) {
-            if (matrica[i][j].getSimbol() == 'R') {
-                robot = new Robot(i, j, 'R');
-                matrica[i][j] = *robot;
-            } else if (matrica[i][j].getSimbol() == 'M') {
-                minotaur = new Minotaur(i, j, 'M');
-            }
-        }
-    }
-
-    std::cout << std::endl;
-    for (int i = 0; i < lavirint->getBrojRedova(); i++) {
+        std::cout << "    ";
         for (int j = 0; j < lavirint->getBrojKolona(); j++) {
             if (matrica[i][j].getSimbol() == 'R') {
                 std::cout << BOLDDARKBLUE << matrica[i][j].getSimbol() << RESET;
@@ -138,18 +133,64 @@ void Igra::pokreniIgru() {
         }
         std::cout << std::endl;
     }
+}
 
-    // napravimo brojač koji će početi igru za 3 sekunde
+char getKarakter() {
+    char buf = 0;
+    struct termios old = {0};
+    if (tcgetattr(0, &old) < 0)
+        perror("tcsetattr()");
+    old.c_lflag &= ~ICANON;
+    old.c_lflag &= ~ECHO;
+    old.c_cc[VMIN] = 1;
+    old.c_cc[VTIME] = 0;
+    if (tcsetattr(0, TCSANOW, &old) < 0)
+        perror("tcsetattr ICANON");
+    if (read(0, &buf, 1) < 0)
+        perror ("read()");
+    old.c_lflag |= ICANON;
+    old.c_lflag |= ECHO;
+    if (tcsetattr(0, TCSADRAIN, &old) < 0)
+        perror ("tcsetattr ~ICANON");
+    return (buf);
+}
+
+void Igra::pokreniIgru() {
+    lavirint->generisiLavirint(brojPredmeta);
+
+    Element** matrica = lavirint->getMatrica();
+    for (int i = 0; i < lavirint->getBrojRedova(); i++) {
+        for (int j = 0; j < lavirint->getBrojKolona(); j++) {
+            if (matrica[i][j].getSimbol() == 'R') {
+                robot = new Robot(i, j, 'R');
+                matrica[i][j] = *robot;
+            } else if (matrica[i][j].getSimbol() == 'M') {
+                minotaur = new Minotaur(i, j, 'M');
+                matrica[i][j] = *minotaur;
+                std::cout << typeid(matrica[i][j]).name() << std::endl;
+            }
+        }
+    }
+
     int brojac = 5;
-    // ali tako da ispisuje 3 2 1
-    std::cout << BOLDDARKBLUE << "\nIgra počinje za: \n" << RESET << std::endl;
     while (brojac > 0) {
-        std::cout << BOLDGREEN << brojac << RESET << std::endl;
+        std::cout << "\r" << BOLDDARKBLUE << "Igra počinje za " << BOLDGREEN << brojac << RESET << " " << std::flush;
         brojac--;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    
+    system("clear"); // ili system("cls") za Windows
+
+    while (true) {
+        prikaziLavirint();
+
+        char komanda = getKarakter();
+        if (komanda == 'q' || komanda == 'Q') {
+            setKrajIgre(true);
+            break;
+        }
+    }
+
 
 
 }

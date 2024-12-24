@@ -50,9 +50,15 @@
 // svaki predmet ima svoj efekat
 
 #include "element.hpp"
+#include <string>
 
 class Predmet : public Element {
+    private:
+        std::string efekat;
     public:
-        Predmet(int x, int y, char simbol);
+        Predmet(int x, int y, char simbol, std::string efekat);
         ~Predmet();
+
+        std::string getEfekat() const;
+        void setEfekat(std::string efekat);
 };
