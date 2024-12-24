@@ -238,6 +238,8 @@ void Igra::pokreniIgru() {
         } else {
             std::cout << "Nepoznata komanda!" << std::endl;
         }
+
+        system("clear"); // ili system("cls") za Windows
     }
 
 }
@@ -248,14 +250,73 @@ void Igra::zavrsiIgru() {
 
 void Igra::pomeriRobota(int x, int y) {
     if (lavirint->getElement(x, y).getSimbol() == 'I') {
+        setRobotPobedio(true);
+        setKrajIgre(true);
+        Element* element = new Element(' ');
+        lavirint->setElement(getRobotX(), getRobotY(), element);
+        setRobotX(x);
+        setRobotY(y);
+        return;
+    } else if (lavirint->getElement(x, y).getSimbol() == '#') {
+        if (getTrajanjeEfekta() == 0) {
+            return;
+        } else if (getTrajanjeEfekta() > 0 && getTrenutniEfekat() != "Čekić") {
+            return;
+        } else if (getTrajanjeEfekta() > 0 && getTrenutniEfekat() == "Čekić") {
+            if (x == 0 || x == lavirint->getBrojRedova() - 1 || y == 0 || y == lavirint->getBrojKolona() - 1) {
+                return;
+            } else {
+                Element* element = new Element(' ');
+                lavirint->setElement(getRobotX(), getRobotY(), element);
+                setRobotX(x);
+                setRobotY(y);
+                Robot* robot = new Robot('R');
+                lavirint->setElement(x, y, robot);
+                return;
+            }
+        }
+    } else if (lavirint->getElement(x, y).getSimbol() == 'U') {
+        return;
+    } else if (lavirint->getElement(x, y).getSimbol() == 'M') {
+        if (getTrajanjeEfekta() > 0 && getTrenutniEfekat() == "Mač") {
+            setMinotaurZiv(false);
+            Element* element = new Element(' ');
+            lavirint->setElement(getRobotX(), getRobotY(), element);
+            setRobotX(x);
+            setRobotY(y);
+            Robot* robot = new Robot('R');
+            lavirint->setElement(x, y, robot);
+            return;
+        } else if (getTrajanjeEfekta() > 0 && getTrenutniEfekat() == "Štit") {
+            return;
+        } else {
+            setRobotPobedio(false);
+            setMinotaurPobedio(true);
+            setKrajIgre(true);
+            Element* element = new Element(' ');
+            lavirint->setElement(getRobotX(), getRobotY(), element);
+            setRobotX(x);
+            setRobotY(y);
+            return;
+        }
+    } else if (lavirint->getElement(x, y).getSimbol() == 'P') {
+        setTrajanjeEfekta(3);
+        Predmet* predmet = dynamic_cast<Predmet*>(lavirint->getMatrica()[x][y]);
+        setTrenutniEfekat(predmet->getEfekat());
+        Element* element = new Element(' ');
+        lavirint->setElement(getRobotX(), getRobotY(), element);
+        setRobotX(x);
+        setRobotY(y);
+        Robot* robot = new Robot('R');
+        lavirint->setElement(x, y, robot);
+        return;
+    } else if (lavirint->getElement(x, y).getSimbol() == ' ') {
+        Element* element = new Element(' ');
+        lavirint->setElement(getRobotX(), getRobotY(), element);
+        setRobotX(x);
+        setRobotY(y);
+        Robot* robot = new Robot('R');
+        lavirint->setElement(x, y, robot);
         return;
     }
-    setRobotPobedio(true);
-    setKrajIgre(true);
-    Element* element = new Element(' ');
-    lavirint->setElement(getRobotX(), getRobotY(), element);
-    setRobotX(x);
-    setRobotY(y);
-    Robot* robot = new Robot('R');
-    lavirint->setElement(x, y, robot);
 }
