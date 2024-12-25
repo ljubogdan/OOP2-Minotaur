@@ -58,6 +58,7 @@
 #include <chrono>
 #include <termio.h>
 #include <unistd.h>
+#include "upis_stanja.hpp"
 
 #define RESET "\033[0m"
 #define RED "\033[31m"

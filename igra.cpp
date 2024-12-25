@@ -253,7 +253,8 @@ void Igra::pokreniIgru() {
 }
 
 void Igra::zavrsiIgru() {
-    std::cout << "Igra zavrsena!" << std::endl;
+    delete lavirint;
+    lavirint = nullptr;
 }
 
 void Igra::pomeriRobota(int x, int y) {
@@ -308,7 +309,7 @@ void Igra::pomeriRobota(int x, int y) {
             return;
         }
     } else if (lavirint->getElement(x, y).getSimbol() == 'P') {
-        setTrajanjeEfekta(4);
+        setTrajanjeEfekta(3);
         Predmet* predmet = dynamic_cast<Predmet*>(lavirint->getMatrica()[x][y]);
         setTrenutniEfekat(predmet->getEfekat());
         Element* element = new Element(' ');
