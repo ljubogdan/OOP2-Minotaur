@@ -222,6 +222,9 @@ void Igra::pokreniIgru() {
 
     while (true) {
         prikaziLavirint();
+        if (getTrajanjeEfekta() > 1) {
+            std::cout << BOLDPINK << "\nEfekat " << getTrenutniEfekat() << " traje još " << getTrajanjeEfekta() - 1 << " runde" << RESET << std::endl;
+        }
 
         char komanda = getKarakter();
         if (komanda == 'q' || komanda == 'Q') {
@@ -239,6 +242,11 @@ void Igra::pokreniIgru() {
             std::cout << "Nepoznata komanda!" << std::endl;
         }
 
+        system("clear"); // ili system("cls") za Windows
+        prikaziLavirint();
+        std::cout << BOLDPINK << "\nEfekat " << getTrenutniEfekat() << " traje još " << getTrajanjeEfekta() - 1 << " runde" << RESET << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        pomeriMinotauraRandom();
         system("clear"); // ili system("cls") za Windows
     }
 
@@ -300,7 +308,7 @@ void Igra::pomeriRobota(int x, int y) {
             return;
         }
     } else if (lavirint->getElement(x, y).getSimbol() == 'P') {
-        setTrajanjeEfekta(3);
+        setTrajanjeEfekta(4);
         Predmet* predmet = dynamic_cast<Predmet*>(lavirint->getMatrica()[x][y]);
         setTrenutniEfekat(predmet->getEfekat());
         Element* element = new Element(' ');
@@ -318,5 +326,113 @@ void Igra::pomeriRobota(int x, int y) {
         Robot* robot = new Robot('R');
         lavirint->setElement(x, y, robot);
         return;
+    }
+}
+
+void Igra::pomeriMinotauraRandom() {
+    if (getMinotaurZiv() == false) {
+        return;
+    }
+
+    int x = getMinotaurX();
+    int y = getMinotaurY();
+
+    int niz[] = {1, 2, 3, 4};
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::shuffle(std::begin(niz), std::end(niz), std::default_random_engine(seed));
+
+    // PRVO PROVERA DA LI JE ROBOT U BLIZINI
+    if (lavirint->getElement(x-1, y).getSimbol() == 'R' || lavirint->getElement(x+1, y).getSimbol() == 'R' || 
+        lavirint->getElement(x, y-1).getSimbol() == 'R' || lavirint->getElement(x, y+1).getSimbol() == 'R') {
+            if (getTrajanjeEfekta() > 0 && getTrenutniEfekat() == "Mač") {
+                setMinotaurZiv(false);
+                Element* element = new Element(' ');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), element);
+                return;
+            } else if (getTrajanjeEfekta() > 0 && getTrenutniEfekat() == "Štit") {
+                return;
+            } else {
+                setRobotPobedio(false);
+                setMinotaurPobedio(true);
+                setKrajIgre(true);
+                Element* element = new Element(' ');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), element);
+                Minotaur* minotaur = new Minotaur('M');
+                lavirint->setElement(getRobotX(), getRobotY(), minotaur);
+                return;
+            }
+    }
+
+    for (int i = 0; i < 4; i++) {
+        if (niz[i] == 1) {
+            if (lavirint->getElement(x-1, y).getSimbol() == ' ') {
+                Element* element = new Element(' ');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), element);
+                setMinotaurX(x-1);
+                Minotaur* minotaur = new Minotaur('M');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), minotaur);
+                return;
+            } else if (lavirint->getElement(x-1, y).getSimbol() == 'P') {
+                // uništava predmet
+                Element* element = new Element(' ');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), element);
+                setMinotaurX(x-1);
+                Minotaur* minotaur = new Minotaur('M');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), minotaur);
+                return;
+            }
+
+        } else if (niz[i] == 2) {
+            if (lavirint->getElement(x+1, y).getSimbol() == ' ') {
+                Element* element = new Element(' ');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), element);
+                setMinotaurX(x+1);
+                Minotaur* minotaur = new Minotaur('M');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), minotaur);
+                return;
+            } else if (lavirint->getElement(x+1, y).getSimbol() == 'P') {
+                // uništava predmet
+                Element* element = new Element(' ');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), element);
+                setMinotaurX(x+1);
+                Minotaur* minotaur = new Minotaur('M');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), minotaur);
+                return;
+            }
+        } else if (niz[i] == 3) {
+            if (lavirint->getElement(x, y-1).getSimbol() == ' ') {
+                Element* element = new Element(' ');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), element);
+                setMinotaurY(y-1);
+                Minotaur* minotaur = new Minotaur('M');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), minotaur);
+                return;
+            } else if (lavirint->getElement(x, y-1).getSimbol() == 'P') {
+                // uništava predmet
+                Element* element = new Element(' ');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), element);
+                setMinotaurY(y-1);
+                Minotaur* minotaur = new Minotaur('M');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), minotaur);
+                return;
+            }
+        } else if (niz[i] == 4) {
+            if (lavirint->getElement(x, y+1).getSimbol() == ' ') {
+                Element* element = new Element(' ');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), element);
+                setMinotaurY(y+1);
+                Minotaur* minotaur = new Minotaur('M');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), minotaur);
+                return;
+            } else if (lavirint->getElement(x, y+1).getSimbol() == 'P') {
+                // uništava predmet
+                Element* element = new Element(' ');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), element);
+                setMinotaurY(y+1);
+                Minotaur* minotaur = new Minotaur('M');
+                lavirint->setElement(getMinotaurX(), getMinotaurY(), minotaur);
+                return;
+            }
+        }
     }
 }
