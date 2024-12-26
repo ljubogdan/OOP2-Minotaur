@@ -198,7 +198,7 @@ void Igra::prikaziLavirintZamagljen() {
                     std::cout << matrica[i][j]->getSimbol();
                 }
             } else {
-                std::cout << "\033[1m\033[37m" << simbol << "\033[0m";
+                std::cout << "\033[2m\033[37m" << simbol << "\033[0m";
             }
         }
         std::cout << std::endl;
