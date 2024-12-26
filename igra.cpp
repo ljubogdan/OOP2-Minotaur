@@ -154,6 +154,8 @@ void Igra::setMinotaurZiv(bool minotaurStatus) {
     minotaurZiv = minotaurStatus;
 }
 
+
+
 void Igra::prikaziLavirint() {
     Element*** matrica = lavirint->getMatrica();
     for (int i = 0; i < lavirint->getBrojRedova(); i++) {
@@ -169,6 +171,34 @@ void Igra::prikaziLavirint() {
                 std::cout << BOLDPINK << matrica[i][j]->getSimbol() << RESET;
             } else {
                 std::cout << matrica[i][j]->getSimbol();
+            }
+        }
+        std::cout << std::endl;
+    }
+}
+
+void Igra::prikaziLavirintZamagljen() {
+    // desi se kada korisnik pojede maglu rata
+    char simbol = 'X';
+    // u zavisnosti od tren pozicije robota printa se samo podmatrica 3x3 gde je on u centru, ostalo se zamagljuje
+    Element*** matrica = lavirint->getMatrica();
+    for (int i = 0; i < lavirint->getBrojRedova(); i++) {
+        std::cout << "    ";
+        for (int j = 0; j < lavirint->getBrojKolona(); j++) {
+            if (i >= robotX - 1 && i <= robotX + 1 && j >= robotY - 1 && j <= robotY + 1) {
+                if (matrica[i][j]->getSimbol() == 'R') {
+                    std::cout << BOLDDARKBLUE << matrica[i][j]->getSimbol() << RESET;
+                } else if (matrica[i][j]->getSimbol() == 'M') {
+                    std::cout << BOLDRED << matrica[i][j]->getSimbol() << RESET;
+                } else if (matrica[i][j]->getSimbol() == 'U' || matrica[i][j]->getSimbol() == 'I') {
+                    std::cout << BOLDGREEN << matrica[i][j]->getSimbol() << RESET;
+                } else if (matrica[i][j]->getSimbol() == 'P') {
+                    std::cout << BOLDPINK << matrica[i][j]->getSimbol() << RESET;
+                } else {
+                    std::cout << matrica[i][j]->getSimbol();
+                }
+            } else {
+                std::cout << "\033[1m\033[37m" << simbol << "\033[0m";
             }
         }
         std::cout << std::endl;
@@ -221,40 +251,154 @@ void Igra::pokreniIgru() {
     system("clear"); // ili system("cls") za Windows
 
     while (true) {
-        prikaziLavirint();
-        if (getTrajanjeEfekta() > 1) {
-            std::cout << BOLDPINK << "\nEfekat " << getTrenutniEfekat() << " traje još " << getTrajanjeEfekta() - 1 << " runde" << RESET << std::endl;
+        if (getTrajanjeEfekta() > 0 && getTrenutniEfekat() == "Magla rata") {
+            prikaziLavirintZamagljen();
+        } else {
+            prikaziLavirint();
+        }
+        if (getTrajanjeEfekta() > 0) {
+            std::cout << BOLDPINK << "\nEfekat " << getTrenutniEfekat() << " traje još " << getTrajanjeEfekta() << " runde" << RESET << std::endl;
         }
 
+        int stanje = 0;
         char komanda = getKarakter();
         if (komanda == 'q' || komanda == 'Q') {
             setKrajIgre(true);
+            porukaKrajIgre();
             break;
         } else if (komanda == 'w' || komanda == 'W') {
             pomeriRobota(getRobotX() - 1, getRobotY());
+            stanje = procenaStanja();
+            if (stanje == 1) {
+                porukaRobotPobedio();
+                break;
+            } else if (stanje == 2) {
+                porukaMinotaurPobedio();
+                break;
+            } else if (stanje == 3) {
+                porukaKrajIgre();
+                break;
+            }
         } else if (komanda == 's' || komanda == 'S') {
             pomeriRobota(getRobotX() + 1, getRobotY());
+            stanje = procenaStanja();
+            if (stanje == 1) {
+                porukaRobotPobedio();
+                break;
+            } else if (stanje == 2) {
+                porukaMinotaurPobedio();
+                break;
+            } else if (stanje == 3) {
+                porukaKrajIgre();
+                break;
+            }
         } else if (komanda == 'a' || komanda == 'A') {
             pomeriRobota(getRobotX(), getRobotY() - 1);
+            stanje = procenaStanja();
+            if (stanje == 1) {
+                porukaRobotPobedio();
+                break;
+            } else if (stanje == 2) {
+                porukaMinotaurPobedio();
+                break;
+            } else if (stanje == 3) {
+                porukaKrajIgre();
+                break;
+            }
         } else if (komanda == 'd' || komanda == 'D') {
             pomeriRobota(getRobotX(), getRobotY() + 1);
+            stanje = procenaStanja();
+            if (stanje == 1) {
+                porukaRobotPobedio();
+                break;
+            } else if (stanje == 2) {
+                porukaMinotaurPobedio();
+                break;
+            } else if (stanje == 3) {
+                porukaKrajIgre();
+                break;
+            }
         } else {
-            std::cout << "Nepoznata komanda!" << std::endl;
+            std::cout << BOLDPINK << "\nNepoznata komanda!" << RESET << std::endl;
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            system("clear"); // ili system("cls") za Windows
+            continue;
         }
 
         system("clear"); // ili system("cls") za Windows
-        prikaziLavirint();
-        std::cout << BOLDPINK << "\nEfekat " << getTrenutniEfekat() << " traje još " << getTrajanjeEfekta() - 1 << " runde" << RESET << std::endl;
+        if (getTrajanjeEfekta() > 0 && getTrenutniEfekat() == "Magla rata") {
+            prikaziLavirintZamagljen();
+        } else {
+            prikaziLavirint();
+        }
+        if (getTrajanjeEfekta() > 0) {
+            std::cout << BOLDPINK << "\nEfekat " << getTrenutniEfekat() << " traje još " << getTrajanjeEfekta() << " runde" << RESET << std::endl;
+        }        
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         pomeriMinotauraRandom();
         system("clear"); // ili system("cls") za Windows
+        if (getTrajanjeEfekta() > 0 && getTrenutniEfekat() == "Magla rata") {
+            prikaziLavirintZamagljen();
+        } else {
+            prikaziLavirint();
+        }
+        if (getTrajanjeEfekta() > 0) {
+            std::cout << BOLDPINK << "\nEfekat " << getTrenutniEfekat() << " traje još " << getTrajanjeEfekta() << " runde" << RESET << std::endl;
+        }
+
+        stanje = procenaStanja();
+        if (stanje == 1) {
+            porukaRobotPobedio();
+            break;
+        } else if (stanje == 2) {
+            porukaMinotaurPobedio();
+            break;
+        } else if (stanje == 3) {
+            porukaKrajIgre();
+            break;
+        }
+
+        setTrajanjeEfekta(getTrajanjeEfekta() - 1);
+
+        system("clear"); // ili system("cls") za Windows
     }
 
+    UpisStanja::upisiUFajl(*lavirint, procenaStanja());
 }
 
 void Igra::zavrsiIgru() {
     delete lavirint;
     lavirint = nullptr;
+}
+
+int Igra::procenaStanja() {
+    if (getRobotPobedio() == true) {
+        return 1;
+    } else if (getMinotaurPobedio() == true) {
+        return 2;
+    } else if (getKrajIgre() == true) {
+        return 3;
+    } else {
+        return 0;
+    }
+}
+
+void Igra::porukaRobotPobedio() {
+    system("clear"); // ili system("cls") za Windows
+    prikaziLavirint();
+    std::cout << BOLDGREEN << "\nRobot je pobedio!" << RESET << std::endl;
+}
+
+void Igra::porukaMinotaurPobedio() {
+    system("clear"); // ili system("cls") za Windows
+    prikaziLavirint();
+    std::cout << BOLDRED << "\nMinotaur je pobedio!" << RESET << std::endl;
+}
+
+void Igra::porukaKrajIgre() {
+    system("clear"); // ili system("cls") za Windows
+    prikaziLavirint();
+    std::cout << BOLDPINK << "\nIgra je prekinuta! (Q)" << RESET << std::endl;
 }
 
 void Igra::pomeriRobota(int x, int y) {

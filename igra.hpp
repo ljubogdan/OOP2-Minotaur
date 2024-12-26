@@ -126,6 +126,14 @@ class Igra {
         void setMinotaurPobedio(bool minotaurPobedio);
         bool getMinotaurZiv() const;
         void setMinotaurZiv(bool minotaurStatus);
+
+        int procenaStanja(); // 1 - robot pobedio, 2 - minotaur pobedio, 3 - prekid igre (Q), 0 - nastavak igre
+
+        void porukaRobotPobedio();
+        void porukaMinotaurPobedio();
+        void porukaKrajIgre();
+
+        void prikaziLavirintZamagljen();
 };
 
 #endif // IGRA_HPP
