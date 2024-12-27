@@ -1,3 +1,5 @@
 g++ -c lavirint_utils.cpp -o lavirint_utils.o
 ar rcs liblavirint_utils.a lavirint_utils.o
 g++ main.cpp -o main_program liblavirint_utils.a lavirint.cpp igra.cpp element.cpp minotaur.cpp predmeti.cpp robot.cpp upis_stanja.cpp -L. -llavirint_utils
+
+./main_program <broj_redova> <broj_kolona> <broj_predmeta>

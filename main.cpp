@@ -48,50 +48,29 @@
 #include "igra.hpp"
 #include <iostream>
 
-void uvodnaPoruka() {
-    std::cout << BLUE << "*************************************" << RESET << std::endl;
-    std::cout << BLUE << "*                                   *" << RESET << std::endl;
-    std::cout << BLUE << "* " << YELLOW << "       DOBRODOŠLI U IGRU          " << BLUE << "*" << RESET << std::endl;
-    std::cout << BLUE << "* " << YELLOW << "   ROBOT U LAVIRINTU KNOSOSA      " << BLUE << "*" << RESET << std::endl;
-    std::cout << BLUE << "*                                   *" << RESET << std::endl;
-    std::cout << BLUE << "*************************************" << RESET << std::endl;
-    std::cout << std::endl;
-    std::cout << MAGENTA << "Pravila igre:" << RESET << std::endl;
-    std::cout << CYAN << "1. Lavirint mora imati najmanje 15x15 dimenzije." << RESET << std::endl;
-    std::cout << CYAN << "2. Broj predmeta mora biti najmanje 3." << RESET << std::endl;
-    std::cout << CYAN << "3. Robot mora pronaci izlaz i izbeci Minotaura!" << RESET << std::endl;
-    std::cout << CYAN << "4. Unesite komandu 'Q' da biste zavrsili igru." << RESET << std::endl;
-    std::cout << CYAN << "----------------------------------------------" << RESET << std::endl;
-}
+int main(int argc, char* argv[]) {
 
-int main() {
-    uvodnaPoruka();
-
-    int brojRedova, brojKolona, brojPredmeta;
-
-    while (true) {
-        std::cout << GREEN << "\nUnesite broj redova lavirinta: " << RESET;
-        std::cin >> brojRedova;
-        std::cout << GREEN << "Unesite broj kolona lavirinta: " << RESET;
-        std::cin >> brojKolona;
-        std::cout << GREEN << "Unesite broj predmeta: " << RESET;
-        std::cin >> brojPredmeta;
-
-        // ispravljamo da broj kolona i redova bude neparan
-        if (brojRedova % 2 == 0) {
-            brojRedova++;
-        }
-        if (brojKolona % 2 == 0) {
-            brojKolona++;
-        }
-
-        if (brojRedova < 15 || brojKolona < 15 || brojPredmeta < 3) {
-            std::cout << RED << "Greska: Broj redova i kolona mora biti veci od 15, a broj predmeta veci od 3." << RESET << std::endl;
-            
-        } else {
-            break;
-        }
+    if (argc != 4) {
+        std::cout << RED << "Upotreba: ./main_program <broj_redova> <broj_kolona> <broj_predmeta>" << RESET << std::endl;
+        return 1;
     }
+
+    int brojRedova = std::stoi(argv[1]);
+    int brojKolona = std::stoi(argv[2]);
+    int brojPredmeta = std::stoi(argv[3]);
+
+    if (brojRedova % 2 == 0) {
+        brojRedova++;
+    }
+    if (brojKolona % 2 == 0) {
+        brojKolona++;
+    }
+
+    if (brojRedova < 15 || brojKolona < 15 || brojPredmeta < 3) {
+        std::cout << RED << "Greška: Broj redova i kolona mora biti veci od 15, a broj predmeta veci od 3." << RESET << std::endl;
+        return 1;
+    }
+    
 
     Igra igra(brojRedova, brojKolona, brojPredmeta);
     igra.pokreniIgru();
