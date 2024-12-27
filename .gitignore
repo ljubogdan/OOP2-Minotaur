@@ -11,3 +11,4 @@ main.o
 main_program.o
 main_program.a
 liblavirint_utils.a
+lavirint.txt
