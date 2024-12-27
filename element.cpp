@@ -14,17 +14,6 @@
 #include "element.hpp"
 
 /**
- * @brief Default konstruktor klase Element
- * 
- * @return
- * 
- * @example Element element;
- */
-
-Element::Element() {
-}
-
-/**
  * @brief Konstruktor klase Element
  * 
  * Konstruktor klase Element koji prima simbol elementa.

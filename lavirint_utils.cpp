@@ -1,11 +1,41 @@
+/**
+ * @file lavirint_utils.cpp
+ * 
+ * @brief Implementacija funkcija za generisanje lavirinta, postavljanje robota, minotaura i predmeta
+ * 
+ * @date 27.12.2024 19:18:00
+ * @author Bogdan Ljubinković SV2/2023
+ * 
+ * @see lavirint_utils.hpp
+ */
+
 #include "lavirint_utils.hpp"
 
 #define BOLDGREEN "\033[1m\033[32m"   
 #define RESET "\033[0m"
 
+/**
+ * @struct Ivica
+ * @brief Struktura koja predstavlja ivicu (granu) u lavirintu.
+ * 
+ * Ivica povezuje dve ćelije u lavirintu definisane svojim koordinatama.
+ * Koristi se za generisanje lavirinta kao grafa.
+ */
 struct Ivica {
-    int x1, y1, x2, y2;
+    int x1; /**< Koordinata reda prve ćelije. */
+    int y1; /**< Koordinata kolone prve ćelije. */
+    int x2; /**< Koordinata reda druge ćelije. */
+    int y2; /**< Koordinata kolone druge ćelije. */
 };
+
+/**
+ * @brief Konstruktor klase DisjunktniSkup.
+ * 
+ * Inicijalizuje strukturu disjunktnih skupova sa zadatom veličinom.
+ * Svaki element je inicijalno u svom zasebnom skupu.
+ * 
+ * @param velicina Broj elemenata u početnom skupu.
+ */
 
 DisjunktniSkup::DisjunktniSkup(int velicina) {
     roditelj.resize(velicina);
@@ -13,10 +43,32 @@ DisjunktniSkup::DisjunktniSkup(int velicina) {
     for (int i = 0; i < velicina; i++) roditelj[i] = i;
 };
 
+/**
+ * @brief Pronalazi koren skupa kojem pripada dati element.
+ * 
+ * Implementira optimizaciju kompresije puta, tako da se svi elementi na putu do korena direktno povežu sa korenom,
+ * čime se ubrzavaju naredne operacije.
+ * 
+ * @param x Element za koji se traži koren.
+ * @return int Indeks korena skupa kojem element pripada.
+ */
+
 int DisjunktniSkup::pronadji(int x) {
     if (roditelj[x] != x) roditelj[x] = pronadji(roditelj[x]);
     return roditelj[x];
 };
+
+/**
+ * @brief Spaja dva skupa u jedan.
+ * 
+ * Skupovi se spajaju na osnovu ranga (dubine). Ako su elementi već u istom skupu,
+ * spajanje se ne vrši. Ako nisu, koren skupa sa manjim rangom postaje podskup
+ * skupa sa većim rangom. Ako su rangi jednaki, rang novog korena se povećava.
+ * 
+ * @param x Indeks prvog elementa.
+ * @param y Indeks drugog elementa.
+ * @return bool Vraća true ako su skupovi uspešno spojeni, false ako su već spojeni.
+ */
 
 bool DisjunktniSkup::spojiSkupove(int x, int y) {
     int korenX = pronadji(x);
@@ -34,8 +86,16 @@ bool DisjunktniSkup::spojiSkupove(int x, int y) {
     return true;
 };
 
-
-
+/**
+ * @brief Generiše lavirint u obliku matrice koristeći Kruskalov algoritam.
+ * 
+ * Na osnovu zadate veličine lavirinta, kreira mrežu povezivanja i koristi disjunktne skupove 
+ * da generiše razapeti graf koji predstavlja lavirint. Sve ćelije počinju kao zidovi (1), 
+ * a hodnici (0) se postavljaju nasumično uz održavanje povezanosti.
+ * 
+ * @param lavirint Referenca na 2D vektor koji predstavlja lavirint. 
+ * Svaka ćelija sadrži 1 za zid ili 0 za hodnik.
+ */
 
 void generisiVektorLavirint(std::vector<std::vector<int>>& lavirint) {
     int redovi = lavirint.size();
@@ -74,6 +134,14 @@ void generisiVektorLavirint(std::vector<std::vector<int>>& lavirint) {
     }
 };
 
+/**
+ * @brief Postavlja robota na početnu poziciju u lavirintu.
+ * 
+ * Robot se postavlja na prvu slobodnu poziciju ispod ulaza ('U') u lavirint.
+ * Ako se pronađe ulaz, stara ćelija se briše, a na njeno mesto se postavlja robot ('R').
+ * 
+ * @param lavirint Referenca na objekat klase Lavirint u kojem se postavlja robot.
+ */
 
 void LavirintUtils::postaviRobota(Lavirint& lavirint) {
     int brojKolona = lavirint.getBrojKolona();
@@ -86,6 +154,16 @@ void LavirintUtils::postaviRobota(Lavirint& lavirint) {
         }
     }
 }
+
+/**
+ * @brief Postavlja predmete na slučajne pozicije u lavirintu.
+ * 
+ * Predmeti ('P') se postavljaju na nasumične slobodne pozicije unutar lavirinta.
+ * Svaki predmet ima nasumično dodeljen efekat iz unapred definisanog skupa efekata.
+ * 
+ * @param lavirint Referenca na objekat klase Lavirint u kojem se postavljaju predmeti.
+ * @param brojPredmeta Broj predmeta koji treba postaviti u lavirint.
+ */
 
 void LavirintUtils::postaviPredmete(Lavirint& lavirint, int brojPredmeta) {
     int brojRedova = lavirint.getBrojRedova();
@@ -108,8 +186,16 @@ void LavirintUtils::postaviPredmete(Lavirint& lavirint, int brojPredmeta) {
     }
 }
 
+/**
+ * @brief Postavlja minotaura na slučajnu poziciju u donjoj polovini lavirinta.
+ * 
+ * Minotaur ('M') se postavlja na nasumičnu slobodnu poziciju u donjoj polovini lavirinta.
+ * Pozicija se bira tako da ne remeti postojeće hodnike i predmete.
+ * 
+ * @param lavirint Referenca na objekat klase Lavirint u kojem se postavlja minotaur.
+ */
+
 void LavirintUtils::postaviMinotaura(Lavirint& lavirint) {
-    // postavljamo minotaura na random poziciju na donju polovinu lavirinta
     int brojRedova = lavirint.getBrojRedova();
     int brojKolona = lavirint.getBrojKolona();
     Element*** matrica = lavirint.getMatrica();
@@ -124,6 +210,17 @@ void LavirintUtils::postaviMinotaura(Lavirint& lavirint) {
         }
     }
 }
+
+/**
+ * @brief Generiše kompletan lavirint, uključujući zidove, hodnike, ulaz, izlaz, robota, predmete i minotaura.
+ * 
+ * Koristi generisani vektor lavirinta za popunjavanje matrice lavirinta.
+ * Dodaje ulaz ('U') na gornji red i izlaz ('I') na donji red. 
+ * Na kraju, poziva funkcije za postavljanje robota, predmeta i minotaura.
+ * 
+ * @param lavirint Referenca na objekat klase Lavirint koji treba da se generiše.
+ * @param brojPredmeta Broj predmeta koji treba postaviti u lavirint.
+ */
 
 void LavirintUtils::generisiLavirint(Lavirint& lavirint, int brojPredmeta) {
     auto start = std::chrono::high_resolution_clock::now();
