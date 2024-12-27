@@ -758,7 +758,7 @@ void Igra::zavrsiIgru() {
 }
 
 /**
- * @brief Metoda procena Stanja
+ * @brief Metoda procenaStanja
  * 
  * Metoda koja procenjuje trenutno stanje igre.
  * 
@@ -786,7 +786,7 @@ int Igra::procenaStanja() {
 }
 
 /**
- * @brief Metoda porukaRobotPobedio
+ * @brief Metoda koja ispisuje poruku o pobedi robota.
  * 
  * Metoda koja ispisuje poruku o pobedi robota.
  * 
@@ -804,7 +804,7 @@ void Igra::porukaRobotPobedio() {
 }
 
 /**
- * @brief Metoda porukaMinotaurPobedio
+ * @brief Metoda koja ispisuje poruku o pobedi minotaura.
  * 
  * Metoda koja ispisuje poruku o pobedi minotaura.
  * 
@@ -841,7 +841,7 @@ void Igra::porukaKrajIgre() {
 }
 
 /**
- * @brief Metoda pomeri Robota
+ * @brief Metoda koja pomera robota na određenu poziciju
  * 
  * Metoda koja pomeri robota na određenu poziciju.
  * 
@@ -950,7 +950,7 @@ void Igra::pomeriRobota(int x, int y) {
 }
 
 /**
- * @brief Metoda pomeri Minotaura Random
+ * @brief Metoda koja nasumično pomera minotaura.
  * 
  * Metoda koja pomeri minotaura na nasumičnu poziciju.
  * 

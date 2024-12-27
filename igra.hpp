@@ -38,22 +38,20 @@
  * @class Igra
  * @brief Klasa koja predstavlja igru
  * 
- * Ova klasa omogućava korisniku da igra igru.
- * Povezuje sve klase i omogućava njihovu interakciju.
- * Opis metoda je u igra.cpp fajlu.
+ * @param lavirint pokazivač na objekat klase Lavirint
+ * @param brojPredmeta broj predmeta
+ * @param krajIgre indikator kraja igre
+ * @param robotPobedio indikator pobede robota
+ * @param minotaurPobedio indikator pobede minotaura
+ * @param minotaurZiv indikator života minotaura
+ * @param trajanjeEfekta trajanje efekta
+ * @param trenutniEfekat trenutni efekat
+ * @param robotX x koordinata robota
+ * @param robotY y koordinata robota
+ * @param minotaurX x koordinata minotaura
+ * @param minotaurY y koordinata minotaura
  * 
- * lavirint - pokazivač na objekat klase Lavirint
- * brojPredmeta - broj predmeta u igri
- * krajIgre - indikator kraja igre
- * trajanjeEfekta - trajanje efekta predmeta
- * trenutniEfekat - trenutni efekat predmeta
- * robotX - x koordinata robota
- * robotY - y koordinata robota
- * minotaurX - x koordinata minotaura
- * minotaurY - y koordinata minotaura
- * robotPobedio - indikator pobede robota
- * minotaurPobedio - indikator pobede minotaura
- * minotaurZiv - indikator života minotaura
+ * @version 1.0
  */
 
 
