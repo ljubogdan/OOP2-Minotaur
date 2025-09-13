@@ -295,9 +295,6 @@ copies of the Software...
 **Bogdan Ljubinković** - *SV2/2023*
 
 - 🎓 **Univerzitet**: Fakultet tehničkih nauka, Novi Sad
-- 📧 **Kontakt**: [Vaš Email]
-- 💼 **LinkedIn**: [Vaš LinkedIn]
-- 🐙 **GitHub**: [Vaš GitHub]
 
 ---
 
